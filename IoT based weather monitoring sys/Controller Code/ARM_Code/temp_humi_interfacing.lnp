@@ -1,0 +1,4 @@
+--cpu ARM7TDMI "startup.o" "temp_humi_interfacing.o" --strict --scatter "temp_humi_interfacing.sct" 
+--autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\temp_humi_interfacing.map" -o "temp_humi_interfacing.axf"
