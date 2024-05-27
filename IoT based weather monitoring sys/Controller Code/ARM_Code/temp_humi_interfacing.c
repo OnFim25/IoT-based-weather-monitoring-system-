@@ -115,7 +115,7 @@ void send_to_server(int temp_val, int humi_val){
 	delay_ms(3000);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	send_str("AT+CIPSTART=\"TCP\",\"192.168.1.136\",5000\r\n"); //this should be the ip address of the server
+	send_str("AT+CIPSTART=\"TCP\",\"127.0.0.1\",5000\r\n"); //this should be the ip address of the server
 	delay_ms(3000);
 	//wait_AT();
 
@@ -127,7 +127,7 @@ void send_to_server(int temp_val, int humi_val){
 	sprintf(get_req, "GET /upload_data?temp=%d&humi=%d HTTP/1.1\r\n", temp_val, humi_val);  //making the GET request with sensor values
 	
 	send_str(get_req);  
-	send_str("Host: 192.168.1.136:5000\r\n\r\n");//send the GET request along with IP address of the server(Host)
+	send_str("Host: 127.0.0.1\r\n\r\n");//send the GET request along with IP address of the server(Host)
 	delay_ms(3000);
 	
 	

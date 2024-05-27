@@ -3,7 +3,14 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-C:\users\quest\Desktop\Neeraj\IoT based weather monitoring sys\Controller Code\ARM_Code\temp_humi_interfacing.uvproj
-Project File Date:  05/24/2024
+E:\Programming\Git codes\IoT-based-weather-monitoring-system-\IoT based weather monitoring sys\Controller Code\ARM_Code\temp_humi_interfacing.uvproj
+Project File Date:  05/27/2024
 
 <h2>Output:</h2>
+Build target 'Target 1'
+assembling Startup.s...
+compiling temp_humi_interfacing.c...
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=4 ZI-data=1260  
+FromELF: creating hex file...
+"temp_humi_interfacing.axf" - 0 Error(s), 0 Warning(s).
