@@ -12,12 +12,12 @@ Components used:
 6) Jumper wires
 
 Before powering up:
-> start by running the server code in python and copy the IP address the server is running on
-> replace the IP address at the action part of the clear all button inside the List_data.html file with server IP using Notepad
-> restart the server
-> change the IP address on the C-code of the arm controller also. and compile the code.
-> upload the code to ARM controller
-> connect the data pin of the DHT11 sensor to P0.4 on the microcontroller with a 5k pullup resister
+1) start by running the server code in python and copy the IP address the server is running on
+2) replace the IP address at the action part of the clear all button inside the List_data.html file with server IP using Notepad
+3) restart the server
+4) change the IP address on the C-code of the arm controller also. and compile the code.
+5) upload the code to ARM controller
+6) connect the data pin of the DHT11 sensor to P0.4 on the microcontroller with a 5k pullup resister
 NB: Make sure to connect both the server and the ESP01 on the same network.
 
 working:
