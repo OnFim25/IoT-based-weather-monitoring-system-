@@ -18,6 +18,7 @@ Before powering up:
 4) change the IP address on the C-code of the arm controller also. and compile the code.
 5) upload the code to ARM controller
 6) connect the data pin of the DHT11 sensor to P0.4 on the microcontroller with a 5k pullup resister
+
 NB: Make sure to connect both the server and the ESP01 on the same network.
 
 working:
