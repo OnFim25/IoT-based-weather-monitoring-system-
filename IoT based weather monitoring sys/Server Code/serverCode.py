@@ -25,7 +25,8 @@ def upload_data():
     time = current_time
     temp = request.args.get("temp")
     humi = request.args.get("humi")
-    
+    print("microcontroller acessed")
+    print(f"{time}=={temp}=={humi}")
     new_data = weather_data( #new_data is an object of weather_data
         time=time,
         temp=temp,
@@ -33,7 +34,7 @@ def upload_data():
     )
     
     new_data.save() #to save the new_data in the database
-    return "done" # all api must have a return value
+    return "" # all api must have a return value
 
 #This route is for accessing the data on database and displaying it on an html webpage
 @app.route("/show_data", methods=["get"]) 
@@ -53,4 +54,4 @@ def clear_all():
     return render_template("list_data.html", new_data = data)
 
 
-app.run(debug=True)
+app.run(debug=True, host = "0.0.0.0")

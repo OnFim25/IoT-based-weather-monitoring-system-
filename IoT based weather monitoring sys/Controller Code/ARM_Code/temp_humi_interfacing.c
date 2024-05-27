@@ -7,6 +7,7 @@
 
 char rec = '\0';
 
+// intialize clock freequency to 60MHz from Oscillator freeq of 12MHz
 void init_pll(){
 	PLL0CFG = 0X24;
 	PLL0CON = 0X01;
@@ -20,6 +21,7 @@ void init_pll(){
 }
 
 //=======================UART part=======================//
+// Initialize UART with baude rate
 void init_uart(int baud){
 	unsigned int val = pclk / (16 * baud);
 	PINSEL0 |= 0x00000005;
@@ -31,11 +33,13 @@ void init_uart(int baud){
 	U0LCR = 0X03;
 }
 
+//send char 
 void send(char ch){
 	U0THR = ch;
 	while(!(U0LSR & (1 << 5)));
 }
 
+//recive char
 char recive(){
 	char ch;
 	while(!(U0LSR & 0X01));
@@ -44,6 +48,7 @@ char recive(){
 	
 }
 
+//send string
 void send_str(char * str){
 	int i = 0;
 	for(i = 0; str[i] != '\0'; i++){
@@ -52,6 +57,7 @@ void send_str(char * str){
 }
 //===========================Timer delay part====================//
 
+//millisecond delay
 void delay_ms(unsigned int val){
 	T0CTCR = 0X00;
 	T0PR = 60000 - 1;
@@ -61,6 +67,7 @@ void delay_ms(unsigned int val){
 	T0TCR = 0X00;
 }
 
+//microsecond delay
 void delay_us(unsigned int val){
 	T0CTCR = 0X00;
 	T0PR = 60 - 1;
@@ -75,108 +82,93 @@ void delay_us(unsigned int val){
 
 /////////////////esp-01 interfacing//////////////////////////
 
-void connect_wifi(){
-   	send_str("AT\r\n");      //AT
-	delay_ms(1000);
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
-	
-	send_str("AT+CWJAP=\"No connection\",\"neerajneeraj\"\r\n"); // WIFI Connect
-	delay_ms(5000);
-	while(rec != '\r'){
+//this function waits for an "\r" form the keyboard
+void wait_AT(){
+		while(rec != '\r'){
 		rec = recive();
 		send(rec);
 	}
 	rec = '\0';
 }
+//////////////////////////////////////////
 
-void send_to_server(int temp_val, int humi_val){	 //this function sends data to server and sends a reset command
-													 //this function has a total delay of 23 seconds
-	int i = 0;										//this should be inside an infinite while loop to send continuesly
+// Initialize ESP-01 to connect to WiFi
+void connect_wifi(){
+   	send_str("AT\r\n");      //AT
+	delay_ms(1000);
+	wait_AT();
+	
+	send_str("AT+CWJAP=\"Quest_10\",\"aCBQISclt@202!\"\r\n"); // WIFI Connection name and password to connect
+	delay_ms(5000);	// During intialization, the code waits for 11 seconds (5 + 6) to connect to WiFi
+}														// After Initialization, the code waits for only 6 seconds from the send_to_server()
+
+//Function to send temprature and humidity data to server 
+void send_to_server(int temp_val, int humi_val){	 
+																						//this function has a total delay of 23 seconds
+	int i = 0;									
  	char get_req[100];
 	
-	delay_ms(6000);
+	delay_ms(6000); // wait for reconnection
 	send_str("AT\r\n");
-	delay_ms(1000);
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
+	
 		
 	delay_ms(3000);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	send_str("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80\r\n"); //this should be the ip address of the server
+	send_str("AT+CIPSTART=\"TCP\",\"192.168.1.136\",5000\r\n"); //this should be the ip address of the server
 	delay_ms(3000);
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
+	//wait_AT();
 
 
-	send_str("AT+CIPSEND=100\r\n"); //aprox size of the chars send through wifi (this is the size of the write link) 
-	//delay(1000);
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
+	send_str("AT+CIPSEND=73\r\n"); //size of the chars send in get request. this value should be >= size of the GET request
+	delay_ms(2000);
+	
 
-	sprintf(get_req, "GET http://127.0.0.1:5000/update_data?temp=%d&humi=%d\r\n", temp_val, humi_val);  //Get request for server
+	sprintf(get_req, "GET /upload_data?temp=%d&humi=%d HTTP/1.1\r\n", temp_val, humi_val);  //making the GET request with sensor values
 	
 	send_str(get_req);  
-	
+	send_str("Host: 192.168.1.136:5000\r\n\r\n");//send the GET request along with IP address of the server(Host)
 	delay_ms(3000);
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
 	
-	for(i = 0; i < 25; i++){ //reason for this is still unknown
-		send('a');
+	
+	for(i = 0; i < 10; i++){ //If value in AT+CIPSEND > size of GET request. this loop fills the remaining spaces for the GET request
+		send('a');									//this loop is not neccessery if AT+CIPSEND = size of GET request	
 	}
 	
 	
 	delay_ms(5000);
 	
-	while(rec != '\r'){
-		rec = recive();
-		send(rec);
-	}
-	rec = '\0';
+	//wait_AT();
 	
-	send_str("AT+RST\r\n"); //Data is only repetedly send after a reset. it is not clear why and how to avoid it
+	send_str("AT+CIPCLOSE\r\n"); // manually close the current connection to restart again
+	//send_str("AT+RST\r\n"); // if close is not restarting the connection, the use this command 
 	delay_ms(2000);
 
 }
 
-////////////////////////////////////////DH11//////////////////////
-
+////////////////////////////////////////DH11 communication//////////////////////
+//function to send start signal to dht11
 void dht11_request(void)
 {
 	IO0DIR = IO0DIR | 0x00000010;	/* Configure DHT11 pin as output (P0.4 used here) */
-	IO0PIN = IO0PIN & 0xFFFFFFEF; /* Make DHT11 pin LOW for minimum 18 seconds */
+	IO0PIN = IO0PIN & 0xFFFFFFEF; /* Make DHT11 pin LOW for atleast 18 milliseconds */
 	delay_ms(20);
 	IO0PIN = IO0PIN | 0x00000010; /* Make DHT11 pin HIGH and wait for response */
-	//delay_us(40);
 }
 
+//function to wait for the resoponce from DHT11
 void dht11_response(void)
 {  
 	IO0DIR = IO0DIR & 0xFFFFFFEF;	/* Configure DHT11 pin as output */
 	while( IO0PIN & 0x00000010 );	/* Wait till response is HIGH */
-//send_str("hi");
+
 	while( (IO0PIN & 0x00000010) == 0 );	/* Wait till response is LOW */
-//send_str("hi");
+
 	while( IO0PIN & 0x00000010 );	/* Wait till response is HIGH */	/* This is end of response */
 }
 
+//function to recive data from the DHT11
+//the recived data will be an 8bit unsigned int (uint8_t) datatype from stdint.h
 uint8_t dht11_data(void)
 {
 	int8_t count;
@@ -194,13 +186,14 @@ uint8_t dht11_data(void)
 	return data;
 }
 
+//======================Main Function==================//
 int main(){
 	uint8_t humidity_integer, humidity_decimal, temp_integer, temp_decimal, checksum; 
 	
 	init_pll();
 	init_uart(9600);
-	delay_ms(2000);
-	//delay_ms(3000);
+	
+	delay_ms(2000); //after powering up, wait for at least 1 second for DHT11 to enter sleep mode
 	connect_wifi();
 	while(1){
 		
@@ -213,20 +206,12 @@ int main(){
 		humidity_decimal = dht11_data();
 		temp_integer = dht11_data();
 		temp_decimal = dht11_data();
-		checksum = dht11_data();
+		checksum = dht11_data(); //all data bytes must be read to check data integrity and to also recive accurate data from DHT11
 
-	   	if( (humidity_integer + humidity_decimal + temp_integer + temp_decimal) == checksum ){
-			
-			
-
-			send_to_server(temp_integer, humidity_integer);
-
-		 	/* sprintf(temp_str, "temprature = %d%\r", temp_integer);
-			 sprintf(humi_str, "humidity = %d%", humidity_integer);
-
-			 send_str(temp_str);
-			 send_str(humi_str);
-			 send_str(" \r");*/
-		}
+	  if( (humidity_integer + humidity_decimal + temp_integer + temp_decimal) == checksum ){ //send data to server only if there are no checksum errors
+				send_to_server(temp_integer, humidity_integer); 
+		}	
+		
+		// Data is read and send to server aproximatly every 24.5 seconds
 	}
 }
