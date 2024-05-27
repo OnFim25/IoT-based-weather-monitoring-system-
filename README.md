@@ -28,5 +28,5 @@ and stores the data and time in the mongoDB database.
 The the contorller sends data to the server almost every 24.5 seconds (this is the minimum possible time between each data upload since ESP01 takes time to send data)
 
 To view the data:
-The data is uploaded through the get request http://<IP address of the server>:<port address>/upload_data?temp=<temprature data>&humi=<humidity data>
-The data on the database can be accessed by   http://<IP address of the server>:<port address>/show_data  
+The data is uploaded through the get request http://<IP_address_of_server>:<port_address>/upload_data?temp=<temprature_data>&humi=<humidity_data>
+The data on the database can be accessed by   http://<IP_address_of_server>:<port_address>/show_data
