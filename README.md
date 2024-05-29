@@ -12,12 +12,13 @@ Components used:
 6) Jumper wires
 
 Before powering up:
-> start by running the server code in python and copy the IP address the server is running on
-> replace the IP address at the action part of the clear all button inside the List_data.html file with server IP using Notepad
-> restart the server
-> change the IP address on the C-code of the arm controller also. and compile the code.
-> upload the code to ARM controller
-> connect the data pin of the DHT11 sensor to P0.4 on the microcontroller with a 5k pullup resister
+1) start by running the server code in python and copy the IP address the server is running on
+2) replace the IP address at the action part of the clear all button inside the List_data.html file with server IP using Notepad
+3) restart the server
+4) change the IP address on the C-code of the arm controller also. and compile the code.
+5) upload the code to ARM controller
+6) connect the data pin of the DHT11 sensor to P0.4 on the microcontroller with a 5k pullup resister
+
 NB: Make sure to connect both the server and the ESP01 on the same network.
 
 working:
@@ -27,5 +28,5 @@ and stores the data and time in the mongoDB database.
 The the contorller sends data to the server almost every 24.5 seconds (this is the minimum possible time between each data upload since ESP01 takes time to send data)
 
 To view the data:
-The data is uploaded through the get request http://<IP address of the server>:<port address>/upload_data?temp=<temprature data>&humi=<humidity data>
-The data on the database can be accessed by   http://<IP address of the server>:<port address>/show_data  
+The data is uploaded through the get request http://<IP_address_of_server>:<port_address>/upload_data?temp=<temprature_data>&humi=<humidity_data>
+The data on the database can be accessed by   http://<IP_address_of_server>:<port_address>/show_data
