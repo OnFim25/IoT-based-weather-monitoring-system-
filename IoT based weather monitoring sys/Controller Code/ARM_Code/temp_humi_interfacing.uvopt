@@ -205,10 +205,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>29</ColumnNumber>
+      <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>181</TopLine>
-      <CurrentLine>203</CurrentLine>
+      <TopLine>97</TopLine>
+      <CurrentLine>99</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\temp_humi_interfacing.c</PathWithFileName>
       <FilenameWithoutPath>temp_humi_interfacing.c</FilenameWithoutPath>
@@ -224,9 +224,9 @@
       <Documents>
         <Doc>
           <Name>.\temp_humi_interfacing.c</Name>
-          <ColumnNumber>29</ColumnNumber>
-          <TopLine>181</TopLine>
-          <CurrentLine>203</CurrentLine>
+          <ColumnNumber>3</ColumnNumber>
+          <TopLine>97</TopLine>
+          <CurrentLine>99</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

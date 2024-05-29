@@ -96,7 +96,7 @@ void wait_AT(){
 void connect_wifi(){
    	send_str("AT\r\n");      //AT
 	delay_ms(1000);
-	wait_AT();
+	//wait_AT();
 	
 	send_str("AT+CWJAP=\"Quest_10\",\"aCBQISclt@202!\"\r\n"); // WIFI Connection name and password to connect
 	delay_ms(5000);	// During intialization, the code waits for 11 seconds (5 + 6) to connect to WiFi

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [E:\Programming\Git codes\IoT-based-weather-monitoring-system-\IoT based weather monitoring sys\Controller Code\ARM_Code\temp_humi_interfacing.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image E:\Programming\Git codes\IoT-based-weather-monitoring-system-\IoT based weather monitoring sys\Controller Code\ARM_Code\temp_humi_interfacing.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 561]: Last Updated: Mon May 27 16:13:31 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 561]: Last Updated: Wed May 29 20:34:15 2024
 <BR><P>
 <H3>Maximum Stack Usage =        240 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -220,7 +220,7 @@ Global Symbols
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_str
 </UL>
 
-<P><STRONG><a name="[25]"></a>recive</STRONG> (ARM, 32 bytes, Stack size 0 bytes, temp_humi_interfacing.o(.text))
+<P><STRONG><a name="[25]"></a>recive</STRONG> (ARM, 32 bytes, Stack size 0 bytes, temp_humi_interfacing.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait_AT
 </UL>
 
@@ -244,20 +244,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dht11_data
 </UL>
 
-<P><STRONG><a name="[24]"></a>wait_AT</STRONG> (ARM, 68 bytes, Stack size 4 bytes, temp_humi_interfacing.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = wait_AT
-</UL>
-<BR>[Calls]<UL><LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recive
+<P><STRONG><a name="[24]"></a>wait_AT</STRONG> (ARM, 68 bytes, Stack size 4 bytes, temp_humi_interfacing.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recive
 <LI><a href="#[23]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send
 </UL>
-<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;connect_wifi
-</UL>
 
-<P><STRONG><a name="[26]"></a>connect_wifi</STRONG> (ARM, 48 bytes, Stack size 4 bytes, temp_humi_interfacing.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = connect_wifi &rArr; wait_AT
+<P><STRONG><a name="[26]"></a>connect_wifi</STRONG> (ARM, 44 bytes, Stack size 4 bytes, temp_humi_interfacing.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = connect_wifi &rArr; send_str
 </UL>
-<BR>[Calls]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wait_AT
-<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<BR>[Calls]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_str
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
