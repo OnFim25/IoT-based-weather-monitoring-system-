@@ -6,8 +6,8 @@ from datetime import datetime
 
 app = Flask(__name__)   
 
-#to connect the database on mongoDB
-me.connect(host = "mongodb+srv://neerajpcvr581:neeraj1981998@weathermonitoring.r9zztni.mongodb.net/?retryWrites=true&w=majority&appName=weatherMonitoring")
+#to connect the database on mongoDB add your connection string of database to your server
+me.connect(host = <connection string>)
 
 #create the json file in the database
 class weather_data(me.Document):
